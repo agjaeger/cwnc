@@ -6,6 +6,7 @@ typedef enum TokenType TokenType;
 enum TokenType {
     TK_RESERVED,
     TK_NUM,
+    TK_START,
     TK_EOF
 };
 
@@ -18,6 +19,6 @@ struct Token {
     char* string;
 };
 
-Token* newToken (TokenType p_type, Token* p_current, char* p_string);
-
+Token* newToken (TokenType type, Token* current, char* string);
+Token* tokenize (char* inputString);
 #endif

@@ -20,3 +20,16 @@ newToken (
 
     return tok;
 }
+
+Token*
+tokenize (
+    char* p_inputString
+) {
+    Token head;
+    head.type = TK_EOF;
+    head.next = NULL;
+
+    Token* current = &head;
+
+    return head.next;
+}
