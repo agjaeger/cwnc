@@ -11,6 +11,8 @@ add_executable(
     cwnc
     source/main.c
     source/parser.c
+    source/utils.c
+    source/asm.c
 )
 
 target_include_directories(

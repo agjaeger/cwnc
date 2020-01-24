@@ -2,6 +2,8 @@
 #ifndef PARSER_HEADER_FILE
 #define PARSER_HEADER_FILE
 
+#define rax "rax"
+
 typedef enum TokenType TokenType;
 enum TokenType {
     TK_RESERVED,
