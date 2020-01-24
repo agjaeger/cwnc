@@ -1,88 +1,40 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
+
 #include <stdbool.h>
-typedef enum {
-    TK_RESERVED,
-    TK_NUM,
-    TK_EOF
-} TokenType;
+#include <stdio.h>
 
-typedef struct Token Token;
-struct Token {
-    Token* next;
-
-    TokenType type;
-    int value;
-    char* string;
-};
+#include "parser.h"
 
 Token* g_tokenList;
 
-bool atEOF () {
-    return g_tokenList->type == TK_EOF;
-}
-
-
-Token*
-newToken (
-    TokenType p_type,
-    Token* p_current,
-    char* p_string
+void
+printToken (
+  Token p_tok
 ) {
-    Token* tok = calloc(1, sizeof(Token));
-
-    tok->type = p_type;
-    tok->string = p_string;
-    p_current->next = tok;
-
-    return tok;
-}
-
-Token*
-tokenize (
-    char* p_inputString
-) {
-    Token head;
-    head.next = NULL;
-
-    Token* cur = &head;
-
-    while (*p_inputString) {
-        if (isspace(*p_inputString)) {
-            p_inputString++;
-            continue;
-        }
-
-        if (*p_inputString == '+' || *p_inputString == '-') {
-            cur = newToken(TK_RESERVED, cur, p_inputString++);
-            continue;
-        }
-
-        if (isdigit(*p_inputString)) {
-            cur = newToken(TK_NUM, cur, p_inputString);
-            cur->value = strtol(p_inputString, &p_inputString, 10);
-            continue;
-        }
+    switch (p_tok.type) {
+        case TK_RESERVED:
+            printf("Reserved Token");
+            printf(": %c\n", *p_tok.string);
+            break;
+        case TK_NUM:
+            printf("Number Token");
+            printf(": %d\n", p_tok.value);
+            break;
+        case TK_START:
+            printf("Start Token\n");
+            break;
+        case TK_EOF:
+            printf("EOF Token\n");
+            break;
     }
-
-    newToken(TK_EOF, cur, p_inputString);
-
-    return head.next;
 }
 
 int main () {
     g_tokenList = tokenize(" 12 + 34 - 5 ");
 
-    while (!atEOF()) {
-        if (g_tokenList->type == TK_NUM) {
-            printf("NUM TOKEN\n");
-        } else if (g_tokenList->type == TK_RESERVED) {
-            printf("TK_RESERVED\n");
-        }
-
-
-        g_tokenList = g_tokenList->next;
+    Token* listHead = &g_tokenList[0];
+    while (!at_EOF(listHead)) {
+        printToken(*listHead);
+        listHead = listHead->next;
     }
 
     return 0;
